@@ -24,7 +24,7 @@ class Block(object):
         copper = int(self.cp % 10)
         print(str(plat) + 'PP, '+str(gold) + 'GP, ' + str(silver) + 'SP, ' + str(copper) + 'CP')
         for i in self.blips:
-            print(i.textualize() + '\n')
+            print(i.textualize())
         print('=======================================')
 
     def longrest(self):
@@ -33,12 +33,21 @@ class Block(object):
         self.thp = 0
         self.chp = self.mhp
 
-    def __init__(self, nm='Creed', max_hp=10, ):
+    def __init__(self, nm='Creed', new_mhp=32, new_chp = 32, new_thp=0, new_xp = 0, new_cp = 2135 ):
+        self.name = nm
         print('Welcome, '+self.name)
-        self.mhp = max_hp
-        self.chp = self.mhp
-        self.thp = 0
-        self.xp = 9055
-        self.cp = 987654
+        self.mhp = new_mhp
+        self.chp = new_chp
+        self.thp = new_thp
+        self.xp = new_xp
+        self.cp = new_cp
+
         self.blips = list()
 
+    def levelcalc(self, xp):
+        thresholds = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000,
+                      64000, 85000, 100000, 120000, 140000, 165000,
+                      195000, 225000, 265000, 305000, 355000]
+        for x in thresholds:
+            if xp < x:
+                return thresholds.index(x)

@@ -24,10 +24,3 @@ class Blip(object):
     def textualize(self):
         return self.name + ': ' + '[X]'*self.curr_value + '[ ]'*(self.max_value - self.curr_value)
 
-    def levelcalc(self, xp):
-        thresholds = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000,
-                      64000, 85000, 100000, 120000, 140000, 165000,
-                      195000, 225000, 265000, 305000, 355000]
-        for x in thresholds:
-            if xp < x:
-                return thresholds.index(x)

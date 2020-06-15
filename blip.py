@@ -5,12 +5,19 @@ class Blip(object):
         self.max_value = int(max_val)
         self.curr_value = int(curr_val)
 
-    def tick(self):
-        if self.curr_value <= 0:
+    def tick(self, up = False):
+        if up:
+            if self.curr_value < self.max_value:
+                self.curr_value += 1
+                return True
             return False
         else:
-            self.curr_value -= 1
-            return True
+            if self.curr_value <= 0:
+                return False
+            else:
+                self.curr_value -= 1
+                return True
+
 
     def fill(self):
         self.curr_value = self.max_value

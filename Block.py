@@ -18,11 +18,10 @@ class Block(object):
         print('['+'|'*self.chp + ' '*(self.mhp-self.chp) + ']' + '|'*self.thp +
               (str(self.chp + self.thp)) + '/' + str(self.mhp) + ' HP')
         print(str(self.xp) + ' XP (Level ' + str(self.levelcalc(self.xp)) + ')')
-        plat = int(self.cp / 1000)
-        gold = int((self.cp % 1000) /100)
+        gold = int((self.cp ) /100)
         silver = int((self.cp % 100) / 10)
         copper = int(self.cp % 10)
-        print(str(plat) + 'PP, '+str(gold) + 'GP, ' + str(silver) + 'SP, ' + str(copper) + 'CP')
+        print(str(gold) + 'GP, ' + str(silver) + 'SP, ' + str(copper) + 'CP')
         for i in self.blips:
             print(i.textualize())
         print('=======================================')

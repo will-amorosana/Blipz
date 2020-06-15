@@ -9,9 +9,15 @@ def save_block(b):
         values.append(i.name)
         values.append(i.max_value)
         values.append(i.curr_value)
-    with open(b.name, 'w+') as f:
-        for i in values:
-            f.write(str(i) + '\n')
+    mypath = os.path.abspath(os.getcwd())
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    if b.name in onlyfiles:
+        print("Character already exists! Overwrite? (Y/N)")
+        ans = input("@>>").upper()
+        if ans == "Y":
+            with open(b.name, 'w+') as f:
+                for i in values:
+                    f.write(str(i) + '\n')
 
 def load_block(nm):
     file = open(nm, 'r').readlines()
@@ -20,9 +26,28 @@ def load_block(nm):
         newchar.add_blip(file[i], file[i + 1], file[i + 2])
     return newchar
 
+def tick_down(blip):
+    for i in adventurer.blips:
+        if i.name == cmd_args[1]:
+            i.tick(False)
+            break
+    print("!!!Blip not found!!!")
+
+def tick_up(blip):
+    for i in adventurer.blips:
+        if i.name == cmd_args[1]:
+            i.tick(True)
+            break
+    print("!!!Blip not found!!!")
+
+
 adventurer = Block('Creed', 32)
 while True:
     cmd_args = input("@>>").split()
+    if len(cmd_args) < 1:
+        continue
+    if cmd_args[0] == 'exit':
+        break
     if cmd_args[0] == 'save':
         save_block(adventurer)
     if cmd_args[0] == 'load':
@@ -31,18 +56,29 @@ while True:
         else:
             mypath = os.path.abspath(os.getcwd())
             onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+            for i in onlyfiles:
+                if ".py" in i:
+                    onlyfiles.remove(i)
             print(onlyfiles)
-    if cmd_args[0] == 'exit':
-        break
+    if cmd_args[0] == 'rename':
+        if len(cmd_args) > 1:
+            adventurer.name = cmd_args[1]
+    if cmd_args[0] == 'remove':
+        if len(cmd_args) > 1:
+            for i in adventurer.blips:
+                if i.name == cmd_args[1]:
+                    adventurer.blips.remove(i)
     if cmd_args[0] == 'add':
         adventurer.add_blip(cmd_args[1], cmd_args[2], cmd_args[3])
     if cmd_args[0] == 'temp':
         adventurer.thp += int(cmd_args[1])
     if cmd_args[0] == 'tick':
-        for i in adventurer.blips:
-            if i.name == cmd_args[1]:
-                i.tick()
-                break
+        if len(cmd_args) == 2:
+            tick_down(cmd_args[1])
+        elif cmd_args[2].lower() == 'up':
+            tick_up(cmd_args[1])
+        else:
+            tick_down(cmd_args[1])
     if cmd_args[0] == 'dmg':
         if adventurer.thp > 0:
             adventurer.thp -= int(cmd_args[1])
@@ -82,6 +118,8 @@ while True:
             else:
                 adventurer.cp += amt
                 print('Successful Transaction!')
+    if cmd_args[0] == 'help':
+        print("Oops! Will didn't write this yet!")
     adventurer.display()
 
 
